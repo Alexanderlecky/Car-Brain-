@@ -17,11 +17,11 @@ def seed_data():
     # Add Users
     user1 = User(name="John Doe", email="john.doe@gmail.com")
     user2 = User(name="Jane Smith", email="jane.smith@gmail.com")
-    user3 = User(name="Khalid Ali", email="khalid.ali@gmail.com")
-    user4 = User(name="Alexander Karanja", email="alexnder.karanja@gmail.com")
-    user5 = User(name="Sufyaan Jibril", email="sufyaan.jibril@gmail.com")
-    user6 = User(name="Ismail Hani", email="ismail.hani@gmail.com")
-    user7 = User(name="Ruth Kamau", email="ruth.kamau@gmail.com")
+    user3 = User(name="Khalid Ali", email="khalid_ali@gmail.com")
+    user4 = User(name="Alexander Karanja", email="alexnderkaranja78@gmail.com")
+    user5 = User(name="Sufyaan Jibril", email="sufyaan204jibril@gmail.com")
+    user6 = User(name="Ismail Hani", email="ismail$hani@gmail.com")
+    user7 = User(name="Ruth Kamau", email="ruth4kamau@gmail.com")
 
     session.add_all([user1, user2, user3, user4, user5, user6, user7])
     session.commit()
