@@ -27,6 +27,8 @@ class Vehicle(Base):
     user = relationship('User', back_populates='vehicles')
     maintenance_logs = relationship('MaintenanceLog', back_populates='vehicle')
     expenses = relationship('Expense', back_populates='vehicle')
+    fuel_efficiencies = relationship('FuelEfficiency', back_populates='vehicle')
+    reminders = relationship('Reminder', back_populates='vehicle')
 
 class MaintenanceLog(Base):
     __tablename__ = 'maintenance_logs'
@@ -50,3 +52,28 @@ class Expense(Base):
     date = Column(Date, nullable=False)
     
     vehicle = relationship('Vehicle', back_populates='expenses')
+
+
+# Fuel Efficiency model
+class FuelEfficiency(Base):
+    __tablename__ = 'fuel_efficiencies'
+
+    id = Column(Integer, primary_key=True)
+    vehicle_id = Column(Integer, ForeignKey('vehicles.id'))
+    date = Column(Date, nullable=False)
+    mileage = Column(Integer, nullable=False)
+    fuel_used = Column(Float, nullable=False)  # Fuel used in gallons/liters
+    efficiency = Column(Float, nullable=False)  # Efficiency (e.g., miles/gallon)
+
+    vehicle = relationship('Vehicle', back_populates='fuel_efficiencies')
+
+
+class Reminder(Base):
+    __tablename__ = 'reminders'
+
+    id = Column(Integer, primary_key=True)
+    vehicle_id = Column(Integer, ForeignKey('vehicles.id'))
+    message = Column(String(255), nullable=False)
+    date = Column(Date, nullable=False)
+
+    vehicle = relationship('Vehicle', back_populates='reminders')
