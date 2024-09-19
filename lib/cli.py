@@ -1,6 +1,6 @@
 from models import  User, Vehicle, MaintenanceLog, Expense
-from sqlalchemy import create_engine
-from sqlachemy.orm import sessionmaker
+from sqlalchemy import create_engine  # Fix this line
+from sqlalchemy.orm import sessionmaker  # Fix this line
 
 
 # Database Setup
