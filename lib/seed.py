@@ -27,13 +27,14 @@ def seed_data():
     session.commit()
 
     # Add Vehicles
+    
     vehicle1 = Vehicle(make="Toyota", model="Corolla", year=2020, vin="1HGBH41JXMN109186", current_mileage=15000, user=user1)
     vehicle2 = Vehicle(make="Honda", model="Civic", year=2019, vin="2HGCM82633A123456", current_mileage=22000, user=user2)
-    vehicle3 = Vehicle(make="BMW", model="M4", year=2017, vin="2HGCM82733B124456", current_mileage=220000, user=user3)
-    vehicle4 = Vehicle(make="Nissan", model="Note", year=2018, vin="2BJCM82633A124577", current_mileage=22000, user=user4)
-    vehicle5 = Vehicle(make="RR", model="Ghost", year=2022, vin="4ADER82633A123490", current_mileage=22000, user=user5)
-    vehicle6 = Vehicle(make="Alpina", model="BMW G82", year=2019, vin="2HGCM82633A123456", current_mileage=1754, user=user6)
-    vehicle7 = Vehicle(make="Lamboghini", model="Urus", year=2024, vin="2HGCM82633A134578", current_mileage=45896, user=user7)
+    vehicle3 = Vehicle(make="BMW", model="M4", year=2017, vin="WBAGH83493DP57456", current_mileage=220000, user=user3)
+    vehicle4 = Vehicle(make="Nissan", model="Note", year=2018, vin="JN8AF5MR0CT101234", current_mileage=22000, user=user4)
+    vehicle5 = Vehicle(make="RR", model="Ghost", year=2022, vin="SCFAB01E95GB11111", current_mileage=22000, user=user5)
+    vehicle6 = Vehicle(make="Alpina", model="BMW G82", year=2019, vin="WAPBA7341AE109999", current_mileage=1754, user=user6)
+    vehicle7 = Vehicle(make="Lamborghini", model="Urus", year=2024, vin="ZPBUA1ZL3HL123456", current_mileage=45896, user=user7)
 
     session.add_all([vehicle1, vehicle2, vehicle3, vehicle4, vehicle5, vehicle6, vehicle7])
     session.commit()
