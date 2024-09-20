@@ -8,6 +8,7 @@ engine = create_engine('sqlite:///car_brain.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
+# Print tables
 def print_users():
     users = session.query(User).all()
     if users:
@@ -44,6 +45,61 @@ def print_expenses():
     else:
         print("\nNo expenses found.")
 
+# Add user
+def add_user():
+    name = input("Enter user name: ")
+    email = input("Enter user email: ")
+
+    # Check if the user already exists
+    existing_user = session.query(User).filter_by(email=email).first()
+    if existing_user:
+        print("User with this email already exists.")
+        return
+
+    new_user = User(name=name, email=email)
+    session.add(new_user)
+    session.commit()
+    print(f"User {name} added successfully!")
+
+# Add vehicle
+def add_vehicle():
+    user_id = input("Enter user ID: ")
+    make = input("Enter vehicle make: ")
+    model = input("Enter vehicle model: ")
+    year = input("Enter vehicle year: ")
+    vin = input("Enter vehicle VIN: ")
+    current_mileage = input("Enter vehicle mileage: ")
+
+    new_vehicle = Vehicle(user_id=user_id, make=make, model=model, year=year, vin=vin, current_mileage=current_mileage)
+    session.add(new_vehicle)
+    session.commit()
+    print(f"Vehicle {make} {model} added successfully!")
+
+# Log maintenance
+def log_maintenance():
+    vehicle_id = input("Enter vehicle ID: ")
+    task = input("Enter maintenance task: ")
+    date = input("Enter maintenance date (YYYY-MM-DD): ")
+    mileage = input("Enter mileage during maintenance: ")
+    description = input("Enter maintenance description: ")
+
+    new_log = MaintenanceLog(vehicle_id=vehicle_id, task=task, date=date, mileage=mileage, description=description)
+    session.add(new_log)
+    session.commit()
+    print(f"Maintenance log for vehicle ID {vehicle_id} added successfully!")
+
+# Add expense
+def add_expense():
+    vehicle_id = input("Enter vehicle ID: ")
+    amount = input("Enter expense amount: ")
+    date = input("Enter expense date (YYYY-MM-DD): ")
+    description = input("Enter expense description: ")
+
+    new_expense = Expense(vehicle_id=vehicle_id, amount=amount, date=date, description=description)
+    session.add(new_expense)
+    session.commit()
+    print(f"Expense for vehicle ID {vehicle_id} added successfully!")
+
 if __name__ == "__main__":
     print("Welcome to Car Brain!")
     
@@ -53,7 +109,7 @@ if __name__ == "__main__":
     print_maintenance_logs()
     print_expenses()
     
-    # Additional functionality like adding users, vehicles, maintenancelog, Expense
+    # Main menu
     while True:
         choice = input("\n1. Add User\n2. Add Vehicle\n3. Log Maintenance\n4. Add Expense\n5. Exit\nChoose an option: ")
         if choice == '1':
