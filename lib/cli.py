@@ -1,86 +1,59 @@
 from models import User, Vehicle, MaintenanceLog, Expense
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.exc import IntegrityError
-from datetime import datetime
+from tabulate import tabulate  # Useful for printing tables in a clean format
 
 # Database Setup
 engine = create_engine('sqlite:///car_brain.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
-def add_user():
-    name = input("Enter the user's name: ")
-    email = input("Enter the user's email: ")
-
-    # Check if email already exists
-    existing_user = session.query(User).filter_by(email=email).first()
-    if existing_user:
-        print(f"User with email {email} already exists.")
+def print_users():
+    users = session.query(User).all()
+    if users:
+        table = [[user.id, user.name, user.email] for user in users]
+        print("\nUsers Table:")
+        print(tabulate(table, headers=["ID", "Name", "Email"], tablefmt="pretty"))
     else:
-        new_user = User(name=name, email=email)
-        try:
-            session.add(new_user)
-            session.commit()
-            print(f"User {name} added successfully.")
-        except IntegrityError:
-            session.rollback()
-            print("Error: Could not add user. Email must be unique.")
+        print("\nNo users found.")
 
-def add_vehicle():
-    user_id = int(input("Enter the user ID: "))
-    user = session.query(User).get(user_id)
-    
-    if user:
-        make = input("Enter the make of the vehicle: ")
-        model = input("Enter the model of the vehicle: ")
-        year = int(input("Enter the year of the vehicle: "))
-        vin = input("Enter the VIN: ")
-        current_mileage = int(input("Enter the current mileage: "))
-
-        new_vehicle = Vehicle(make=make, model=model, year=year, vin=vin, current_mileage=current_mileage, user_id=user_id)
-        session.add(new_vehicle)
-        session.commit()
-        print(f"Vehicle {make} {model} added for user {user.name}!")
+def print_vehicles():
+    vehicles = session.query(Vehicle).all()
+    if vehicles:
+        table = [[vehicle.id, vehicle.make, vehicle.model, vehicle.year, vehicle.vin, vehicle.current_mileage, vehicle.user_id] for vehicle in vehicles]
+        print("\nVehicles Table:")
+        print(tabulate(table, headers=["ID", "Make", "Model", "Year", "VIN", "Mileage", "User ID"], tablefmt="pretty"))
     else:
-        print(f"User with ID {user_id} does not exist.")
+        print("\nNo vehicles found.")
 
-def log_maintenance():
-    vehicle_id = int(input("Enter the vehicle ID: "))
-    task = input("Enter the maintenance task: ")
-    date = input("Enter the date (YYYY-MM-DD): ")
-    mileage = int(input("Enter the mileage: "))
-    description = input("Enter a description (optional): ")
-
-    new_maintenance = MaintenanceLog(vehicle_id=vehicle_id, task=task, date=date, mileage=mileage, description=description)
-    session.add(new_maintenance)
-    session.commit()
-    print("Maintenance task logged successfully.")
-
-def add_expense():
-    vehicle_id = int(input("Enter the vehicle ID: "))
-    vehicle = session.query(Vehicle).get(vehicle_id)
-    
-    if vehicle:
-        amount = float(input("Enter the amount: "))
-        date = input("Enter the date (YYYY-MM-DD): ")
-        description = input("Enter a description (optional): ")
-
-        try:
-            # Parse date input to datetime object
-            expense_date = datetime.strptime(date, '%Y-%m-%d').date()
-
-            new_expense = Expense(vehicle_id=vehicle_id, amount=amount, date=expense_date, description=description)
-            session.add(new_expense)
-            session.commit()
-            print(f"Expense of {amount} added for vehicle {vehicle.make} {vehicle.model}.")
-        except ValueError:
-            print("Invalid date format. Please use YYYY-MM-DD.")
+def print_maintenance_logs():
+    logs = session.query(MaintenanceLog).all()
+    if logs:
+        table = [[log.id, log.vehicle_id, log.task, log.date, log.mileage, log.description] for log in logs]
+        print("\nMaintenance Logs Table:")
+        print(tabulate(table, headers=["ID", "Vehicle ID", "Task", "Date", "Mileage", "Description"], tablefmt="pretty"))
     else:
-        print(f"Vehicle with ID {vehicle_id} does not exist.")
+        print("\nNo maintenance logs found.")
+
+def print_expenses():
+    expenses = session.query(Expense).all()
+    if expenses:
+        table = [[expense.id, expense.vehicle_id, expense.amount, expense.date, expense.description] for expense in expenses]
+        print("\nExpenses Table:")
+        print(tabulate(table, headers=["ID", "Vehicle ID", "Amount", "Date", "Description"], tablefmt="pretty"))
+    else:
+        print("\nNo expenses found.")
 
 if __name__ == "__main__":
     print("Welcome to Car Brain!")
+    
+    # Print all tables
+    print_users()
+    print_vehicles()
+    print_maintenance_logs()
+    print_expenses()
+    
+    # Additional functionality like adding users, vehicles, maintenancelog, Expense
     while True:
         choice = input("\n1. Add User\n2. Add Vehicle\n3. Log Maintenance\n4. Add Expense\n5. Exit\nChoose an option: ")
         if choice == '1':
